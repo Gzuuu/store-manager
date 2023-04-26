@@ -1,0 +1,31 @@
+const { expect } = require('chai');
+const sinon = require('sinon');
+
+const { productModel } = require('../../../src/models');
+const { allUserMock, singleUser } = require('./mocks/productMock');
+const { productService } = require('../../../src/services');
+
+describe('testes da camada Service', function () {
+  afterEach(() => sinon.restore());
+  it('verifica o retorno da função getAll', async function () {
+    sinon.stub(productModel, 'getAll').resolves(allUserMock);
+
+    const result = await productService.getAll();
+    expect(result).to.be.equal(allUserMock);
+    expect(result).to.have.length(2);
+  });
+
+  it('verifica o retorno da função getById', async function () {
+    sinon.stub(productModel, 'getById').resolves(singleUser);
+
+    const result = await productService.getById(1);
+    expect(result.message).to.be.equal(singleUser);
+  });
+
+  it('verifica o retorno  da função getById retorna um erro caso não passado parametro', async function () {
+    sinon.stub(productModel, 'getById').resolves(undefined);
+
+    const result = await productService.getById(5);
+    expect(result.message).to.be.equal('Product not found');
+  });
+});
