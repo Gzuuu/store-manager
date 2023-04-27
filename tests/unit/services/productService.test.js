@@ -29,7 +29,7 @@ describe('testes da camada Service', function () {
     expect(result.message).to.be.equal('Product not found');
   });
 
-  it('verifica o retoro da função addProduct', async function () {
+  it('verifica o retorno da função addProduct', async function () {
     sinon.stub(productModel, 'addProduct').resolves(addedProduct);
 
     const result = await productService.addProduct({ name: 'Feijão tropeiro' });

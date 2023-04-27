@@ -5,7 +5,10 @@ const allProducts = [
   
 const singleProduct = { id: 1, name: 'Maria do bairro' };
 
+const addedProduct = { id: 13, name: 'Feijão tropeiro' };
+
 module.exports = {
   allProducts,
   singleProduct,
+  addedProduct,
 };
