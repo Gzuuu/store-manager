@@ -21,4 +21,12 @@ describe('testes da cadama model', function () {
     const result = await productModel.getById(1);
     expect(result).to.be.equal(singleUser);
   });
+
+  it('verifica a inserção de um novo produto', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 4 }]);
+
+    const result = await productModel.addProduct('Geladeira Tsunami');
+    expect(result.id).to.be.equal(4);
+    expect(result.name).to.be.equal('Geladeira Tsunami');
+  });
 });
