@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 const { productModel } = require('../../../src/models');
-const { allUserMock, singleUser } = require('./mocks/productMock');
+const { allUserMock, singleUser, addedProduct } = require('./mocks/productMock');
 const { productService } = require('../../../src/services');
 
 describe('testes da camada Service', function () {
@@ -27,5 +27,12 @@ describe('testes da camada Service', function () {
 
     const result = await productService.getById(5);
     expect(result.message).to.be.equal('Product not found');
+  });
+
+  it('verifica o retoro da função addProduct', async function () {
+    sinon.stub(productModel, 'addProduct').resolves(addedProduct);
+
+    const result = await productService.addProduct({ name: 'Feijão tropeiro' });
+    expect(result.message).to.be.equal(addedProduct);
   });
 });
