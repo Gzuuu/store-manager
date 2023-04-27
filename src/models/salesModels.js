@@ -1,6 +1,5 @@
-const connection = require('./connection');
 const snakeize = require('snakeize');
-
+const connection = require('./connection');
 
 const addSaleDate = async () => {
   const [{ insertId }] = await connection.execute(`
