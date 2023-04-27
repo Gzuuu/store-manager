@@ -10,7 +10,7 @@ const addSaleDate = async () => {
 
 const addSales = async (sale, saleId) => {
   const columns = Object.keys(snakeize(sale)).join(', ');
-
+  console.log(columns);
   const placeholders = Object.keys(sale)
     .map((_key) => '?')
     .join(', ');
