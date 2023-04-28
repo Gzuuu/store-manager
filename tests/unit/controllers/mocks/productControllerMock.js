@@ -17,9 +17,23 @@ const someSaleMock = [
     "quantity": 15
   }];
 
+const serviceGoodReturn = {
+  id: 5,
+  itemsSold: someSaleMock,
+};
+
+const wrongSaleMock = [
+  {
+    "productId": 25,
+    "quantity": 32
+  }
+];
+
 module.exports = {
   allProducts,
   singleProduct,
   addedProduct,
   someSaleMock,
+  serviceGoodReturn,
+  wrongSaleMock,
 };

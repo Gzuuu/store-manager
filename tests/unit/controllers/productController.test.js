@@ -5,9 +5,15 @@ const sinonChai = require('sinon-chai');
 const { expect } = chai;
 chai.use(sinonChai);
 
-const { productService } = require('../../../src/services');
-const { allProducts, singleProduct, addedProduct } = require('./mocks/productControllerMock');
-const { productController } = require('../../../src/controllers');
+const { productService, saleService } = require('../../../src/services');
+const {
+  allProducts,
+  singleProduct,
+  addedProduct,
+  someSaleMock,
+  serviceGoodReturn,
+  wrongSaleMock } = require('./mocks/productControllerMock');
+const { productController, salesController } = require('../../../src/controllers');
 
 describe('testes da camada controller', function () {
   afterEach(() => sinon.restore());
@@ -61,5 +67,30 @@ describe('testes da camada controller', function () {
     await productController.addProduct(req, res);
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(addedProduct);
+  });
+
+  it('verifica o resultado da inserção de algumas vendas', async function () {
+    sinon.stub(saleService, 'insertSales').resolves({ type: null, message: serviceGoodReturn })
+    
+    const req = { body: someSaleMock };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await salesController.insertSales(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(serviceGoodReturn);
+  });
+
+  it('verifica o resultado da inserção de um produto inexistente', async function () {
+    sinon.stub(saleService, 'insertSales').resolves({ type: 'PRODUCT_ID_NOT_FOUND', message: 'Product not found' });
+
+    const req = { body: wrongSaleMock };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    await salesController.insertSales(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
   });
 });

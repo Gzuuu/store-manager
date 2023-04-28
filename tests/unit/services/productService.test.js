@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const { productModel, salesModel } = require('../../../src/models');
 const { allUserMock, singleUser, addedProduct, someSaleMock } = require('./mocks/productMock');
-const { productService } = require('../../../src/services');
+const { productService, saleService } = require('../../../src/services');
 
 describe('testes da camada Service', function () {
   afterEach(() => sinon.restore());
@@ -36,11 +36,19 @@ describe('testes da camada Service', function () {
     expect(result.message).to.be.equal(addedProduct);
   });
 
-  it('verifica o retorno da inserção de uma venda', async function () {
+  it('verifica o retorno da inserção de uma venda válida', async function () {
     sinon.stub(salesModel, 'addSales').resolves({ id: 5, itemsSold: someSaleMock});
 
-    const result = await salesModel.addSales(someSaleMock);
-    expect(result.itemsSold).to.be.deep.equal(someSaleMock);
-    expect(result.id).to.be.equal(5);
+    const result = await saleService.insertSales(someSaleMock);
+    expect(result.type).to.be.null;
+    expect(result.message).to.be.deep.equal({ id: 5, itemsSold: someSaleMock });
+  });
+
+  it('verifica o retorno da inserção de uma venda inválida', async function () {
+    sinon.stub(productModel, 'getById').resolves(undefined);
+
+    const result = await saleService.insertSales(someSaleMock);
+    expect(result.type).to.be.equal('PRODUCT_ID_NOT_FOUND');
+    expect(result.message).to.be.equal('Product not found');
   });
 });
