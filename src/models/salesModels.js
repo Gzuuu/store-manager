@@ -26,7 +26,7 @@ WHERE S.id = SP.sale_id
 ORDER BY SP.sale_id, SP.product_id;`;
   const [result] = await connection.execute(SQL);
   return result;
-}
+};
 
 const getSalesById = async (id) => {
   const SQL = `SELECT S.date AS date,
