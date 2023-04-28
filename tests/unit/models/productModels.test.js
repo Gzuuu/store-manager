@@ -1,13 +1,13 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 
-const { productModel } = require('../../../src/models');
+const { productModel, salesModel } = require('../../../src/models');
 const connection = require('../../../src/models/connection');
-const { allUserMock, singleUser } = require('./mocks/productMock');
+const { allUserMock, singleUser, saleMock, someSaleMock } = require('./mocks/productMock');
 
 describe('testes da cadama model', function () {
+  afterEach(() => sinon.restore());
   it('verifica o retorno do getAll', async function () {
-    afterEach(() => sinon.restore());
     sinon.stub(connection, 'execute').resolves([allUserMock]);
 
     const result = await productModel.getAll();
@@ -28,5 +28,27 @@ describe('testes da cadama model', function () {
     const result = await productModel.addProduct('Geladeira Tsunami');
     expect(result.id).to.be.equal(4);
     expect(result.name).to.be.equal('Geladeira Tsunami');
+  });
+
+  it('verifica a inserção de uma única venda', async function () {
+    sinon.stub(connection, 'execute')
+      .onCall(0).resolves([{ insertId: 6 }])
+      .onCall(1).resolves([saleMock]);
+
+    const result = await salesModel.addSales(saleMock);
+
+    expect(result.id).to.be.equal(6);
+    expect(result.itemsSold).to.be.deep.equal(saleMock);
+  });
+
+  it('verifica a inserção de várias vendas', async function () {
+    sinon.stub(connection, 'execute')
+      .onCall(0).resolves([{ insertId: 6 }])
+      .onCall(1).resolves([someSaleMock]);
+
+    const result = await salesModel.addSales(someSaleMock);
+
+    expect(result.id).to.be.equal(6);
+    expect(result.itemsSold).to.be.deep.equal(someSaleMock);
   });
 });
