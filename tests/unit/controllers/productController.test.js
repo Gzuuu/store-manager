@@ -132,7 +132,7 @@ describe('testes da camada controller', function () {
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns();
 
-    const result = await salesController.getSaleById(req, res);
+    await salesController.getSaleById(req, res);
 
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
