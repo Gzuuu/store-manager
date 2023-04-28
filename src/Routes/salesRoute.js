@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.post('/', validateSaleInsert.verifyQuantityAndProduct, salesController.insertSales);
 
+router.get('/', salesController.getSales);
+
 module.exports = router;

@@ -28,7 +28,22 @@ ORDER BY SP.sale_id, SP.product_id;`;
   return result;
 }
 
+const getSalesById = async (id) => {
+  const SQL = `SELECT S.date AS date,
+SP.product_id AS productId,
+SP.quantity AS quantity
+FROM StoreManager.sales_products AS SP
+INNER JOIN StoreManager.sales AS S
+ON S.id = SP.sale_id
+WHERE S.id = ?
+ORDER BY SP.sale_id, SP.product_id;`;
+  
+  const [result] = await connection.execute(SQL, [id]);
+  return result;
+};
+
 module.exports = {
   addSales,
   getSales,
+  getSalesById,
 };
