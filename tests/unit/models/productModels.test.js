@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const { productModel, salesModel } = require('../../../src/models');
 const connection = require('../../../src/models/connection');
-const { allUserMock, singleUser, saleMock, someSaleMock } = require('./mocks/productMock');
+const { allUserMock, singleUser, saleMock, someSaleMock, allSalesMock, specificSaleMock } = require('./mocks/productMock');
 
 describe('testes da cadama model', function () {
   afterEach(() => sinon.restore());
@@ -50,5 +50,21 @@ describe('testes da cadama model', function () {
 
     expect(result.id).to.be.equal(6);
     expect(result.itemsSold).to.be.deep.equal(someSaleMock);
+  });
+
+  it('verifica o retorno da função para pegar todas as vendas', async function () {
+    sinon.stub(connection, 'execute').resolves([allSalesMock]);
+
+    const result = await salesModel.getSales();
+
+    expect(result).to.be.deep.equal(allSalesMock);
+  });
+
+  it('verifica o retordo da função para pegar uma venda específica', async function () {
+    sinon.stub(connection, 'execute').resolves([specificSaleMock]);
+
+    const result = await salesModel.getSalesById(5);
+
+    expect(result).to.be.deep.equal(specificSaleMock);
   });
 });
