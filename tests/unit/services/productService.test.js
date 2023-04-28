@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 
-const { productModel } = require('../../../src/models');
-const { allUserMock, singleUser, addedProduct } = require('./mocks/productMock');
+const { productModel, salesModel } = require('../../../src/models');
+const { allUserMock, singleUser, addedProduct, someSaleMock } = require('./mocks/productMock');
 const { productService } = require('../../../src/services');
 
 describe('testes da camada Service', function () {
@@ -34,5 +34,13 @@ describe('testes da camada Service', function () {
 
     const result = await productService.addProduct({ name: 'Feijão tropeiro' });
     expect(result.message).to.be.equal(addedProduct);
+  });
+
+  it('verifica o retorno da inserção de uma venda', async function () {
+    sinon.stub(salesModel, 'addSales').resolves({ id: 5, itemsSold: someSaleMock});
+
+    const result = await salesModel.addSales(someSaleMock);
+    expect(result.itemsSold).to.be.deep.equal(someSaleMock);
+    expect(result.id).to.be.equal(5);
   });
 });

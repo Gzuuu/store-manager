@@ -15,5 +15,6 @@ const insertSales = async (sales) => {
 };
 
 module.exports = {
+  verifyIdExist,
   insertSales,
 };
