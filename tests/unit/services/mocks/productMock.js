@@ -15,11 +15,34 @@ const someSaleMock = [
   {
     "productId": 2,
     "quantity": 15
-  }];
+}];
+
+const allSalesMock = [
+  {
+    saleId: 3,
+    date: '2023-04-27T21:34:41.000Z',
+    productId: 1,
+    quantity: 1
+  },
+  {
+    saleId: 3,
+    date: '2023-04-27T21:34:41.000Z',
+    productId: 2,
+    quantity: 5
+  }
+];
+
+const specificSaleMock = [{
+  date: '2023-04-27T21:34:41.000Z',
+  productId: 1,
+  quantity: 1
+}];
 
 module.exports = {
   allUserMock,
   singleUser,
   addedProduct,
   someSaleMock,
+  allSalesMock,
+  specificSaleMock,
 };

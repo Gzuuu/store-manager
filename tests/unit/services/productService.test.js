@@ -2,7 +2,13 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 const { productModel, salesModel } = require('../../../src/models');
-const { allUserMock, singleUser, addedProduct, someSaleMock } = require('./mocks/productMock');
+const {
+  allUserMock,
+  singleUser,
+  addedProduct,
+  someSaleMock,
+  allSalesMock,
+  specificSaleMock } = require('./mocks/productMock');
 const { productService, saleService } = require('../../../src/services');
 
 describe('testes da camada Service', function () {
@@ -50,5 +56,31 @@ describe('testes da camada Service', function () {
     const result = await saleService.insertSales(someSaleMock);
     expect(result.type).to.be.equal('PRODUCT_ID_NOT_FOUND');
     expect(result.message).to.be.equal('Product not found');
+  });
+
+  it('verifica o retordo da função para pegar todas as vendas', async function () {
+    sinon.stub(salesModel, 'getSales').resolves(allSalesMock);
+
+    const result = await saleService.getSales();
+
+    expect(result).to.be.deep.equal(allSalesMock);
+  });
+
+  it('verifica o retorno da função para pegar uma venda especifica em caso de sucesso', async function () {
+    sinon.stub(salesModel, 'getSalesById').resolves(specificSaleMock);
+
+    const result = await saleService.getSaleById(5);
+
+    expect(result.type).to.be.null;
+    expect(result.message).to.be.deep.equal(specificSaleMock);
+  });
+
+  it('verifica o retorno da função para pegar uma venda especifica em caso de falha', async function () {
+    sinon.stub(salesModel, 'getSalesById').resolves([]);
+
+    const result = await saleService.getSaleById(10);
+
+    expect(result.type).to.be.equal('SALE_NOT_FOUND');
+    expect(result.message).to.be.deep.equal('Sale not found');
   });
 });
