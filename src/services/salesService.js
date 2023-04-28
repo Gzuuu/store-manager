@@ -13,6 +13,11 @@ const insertSales = async (sales) => {
   return { type: null, message: result };
 };
 
+const getSales = async () => {
+  return salesModel.getSales();
+}
+
 module.exports = {
   insertSales,
+  getSales,
 };
