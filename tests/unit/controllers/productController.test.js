@@ -12,7 +12,9 @@ const {
   addedProduct,
   someSaleMock,
   serviceGoodReturn,
-  wrongSaleMock } = require('./mocks/productControllerMock');
+  wrongSaleMock, 
+  allSalesMock, 
+  specificSaleMock} = require('./mocks/productControllerMock');
 const { productController, salesController } = require('../../../src/controllers');
 
 describe('testes da camada controller', function () {
@@ -90,6 +92,48 @@ describe('testes da camada controller', function () {
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns();
     await salesController.insertSales(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+  });
+
+  it('verifica se o resultado da função getAllSales é o esperado', async function () {
+    sinon.stub(saleService, 'getSales').resolves(allSalesMock);
+
+    const req = {};
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await salesController.getSales(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(allSalesMock);
+  });
+
+  it('verifica o resultado da função getSaleById é o esperado', async function () {
+    sinon.stub(saleService, 'getSaleById').resolves({ type: null, message: specificSaleMock });
+
+    const req = { params: { id: 5 } };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    const result = await salesController.getSaleById(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(specificSaleMock);
+  });
+
+  it('verifica o resultado da função getSaleById quando o ID é inválido', async function () {
+    sinon.stub(saleService, 'getSaleById').resolves({ type: 'SALE_NOT_FOUND', message: 'Product not found' });
+
+    const req = { params: { id: 12 } };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    const result = await salesController.getSaleById(req, res);
+
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
   });

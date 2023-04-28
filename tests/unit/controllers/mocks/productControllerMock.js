@@ -29,6 +29,27 @@ const wrongSaleMock = [
   }
 ];
 
+const allSalesMock = [
+  {
+    saleId: 3,
+    date: '2023-04-27T21:34:41.000Z',
+    productId: 1,
+    quantity: 1
+  },
+  {
+    saleId: 3,
+    date: '2023-04-27T21:34:41.000Z',
+    productId: 2,
+    quantity: 5
+  }
+];
+
+const specificSaleMock = [{
+  date: '2023-04-27T21:34:41.000Z',
+  productId: 1,
+  quantity: 1
+}];
+
 module.exports = {
   allProducts,
   singleProduct,
@@ -36,4 +57,6 @@ module.exports = {
   someSaleMock,
   serviceGoodReturn,
   wrongSaleMock,
+  allSalesMock,
+  specificSaleMock,
 };
