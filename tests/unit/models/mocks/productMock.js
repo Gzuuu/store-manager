@@ -41,6 +41,11 @@ const specificSaleMock = {
   quantity: 1
 };
 
+const updatedMockValue = {
+  id: 3,
+  name: 'Chesperito',
+}
+
 module.exports = {
   allUserMock,
   singleUser,
@@ -48,4 +53,5 @@ module.exports = {
   someSaleMock,
   allSalesMock,
   specificSaleMock,
+  updatedMockValue,
 };

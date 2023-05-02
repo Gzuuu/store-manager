@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const { productModel, salesModel } = require('../../../src/models');
 const connection = require('../../../src/models/connection');
-const { allUserMock, singleUser, saleMock, someSaleMock, allSalesMock, specificSaleMock } = require('./mocks/productMock');
+const { allUserMock, singleUser, saleMock, someSaleMock, allSalesMock, specificSaleMock, updatedMockValue } = require('./mocks/productMock');
 
 describe('testes da cadama model', function () {
   afterEach(() => sinon.restore());
@@ -66,5 +66,13 @@ describe('testes da cadama model', function () {
     const result = await salesModel.getSalesById(5);
 
     expect(result).to.be.deep.equal(specificSaleMock);
+  });
+
+  it('verifica o resultado da atualização de um produto', async function () { 
+    sinon.stub(connection, 'execute').returns(updatedMockValue);
+
+    const result = await productModel.editProduct('Chesperito', 3);
+
+    expect(result).to.be.deep.equal(updatedMockValue);
   });
 });
