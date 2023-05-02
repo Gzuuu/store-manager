@@ -14,7 +14,8 @@ const {
   serviceGoodReturn,
   wrongSaleMock, 
   allSalesMock, 
-  specificSaleMock} = require('./mocks/productControllerMock');
+  specificSaleMock,
+  updatedMockValue} = require('./mocks/productControllerMock');
 const { productController, salesController } = require('../../../src/controllers');
 
 describe('testes da camada controller', function () {
@@ -133,6 +134,40 @@ describe('testes da camada controller', function () {
     res.json = sinon.stub().returns();
 
     await salesController.getSaleById(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+  });
+
+  it('verifica a atualização de um produto', async function () {
+    sinon.stub(productService, 'updateProduct').resolves({ type: null, message: updatedMockValue })
+    
+    const req = {
+      body: { name: 'Chesperito' },
+      params: { id: 3 }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updatedMockValue);
+  });
+
+  it('verifica a atualização de um produto inexistente', async function () {
+    sinon.stub(productService, 'updateProduct').resolves({ type: 'NOT_FOUND', message: 'Product not found' });
+    
+    const req = {
+      body: { name: 'Chesperito' },
+      params: { id: 30 }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await productController.updateProduct(req, res);
 
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Product not found' });

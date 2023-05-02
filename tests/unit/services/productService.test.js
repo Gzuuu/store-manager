@@ -93,4 +93,12 @@ describe('testes da camada Service', function () {
     expect(result.type).to.be.null;
     expect(result.message).to.be.deep.equal(updatedMockValue);
   });
+
+  it('verifica o retorno da função em caso de produto inválido', async function () {
+    sinon.stub(productModel, 'getById').resolves(undefined);
+
+    const result = await productService.updateProduct({ name: 'Chesperito', idToChange: 30 });
+    expect(result.type).to.be.equal('NOT_FOUND');
+    expect(result.message).to.be.equal('Product not found');
+  });
 });
