@@ -42,8 +42,18 @@ ORDER BY SP.sale_id, SP.product_id;`;
   return result;
 };
 
+const deleteSale = async (id) => {
+  const SQL = `DELETE A, B FROM StoreManager.sales AS A
+LEFT JOIN StoreManager.sales_products AS B
+ON A.id = B.sale_id
+WHERE A.id = ?;`;
+  
+  await connection.execute(SQL, [id]);
+};
+
 module.exports = {
   addSales,
   getSales,
   getSalesById,
+  deleteSale,
 };
