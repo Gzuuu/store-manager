@@ -8,7 +8,8 @@ const {
   addedProduct,
   someSaleMock,
   allSalesMock,
-  specificSaleMock } = require('./mocks/productMock');
+  specificSaleMock, 
+  updatedMockValue} = require('./mocks/productMock');
 const { productService, saleService } = require('../../../src/services');
 
 describe('testes da camada Service', function () {
@@ -82,5 +83,14 @@ describe('testes da camada Service', function () {
 
     expect(result.type).to.be.equal('SALE_NOT_FOUND');
     expect(result.message).to.be.deep.equal('Sale not found');
+  });
+
+  it('verifica o retoro da função que atualiza um produto', async function () {
+    sinon.stub(productModel, 'editProduct').resolves(updatedMockValue);
+
+    const result = await productService.updateProduct({ name: 'Chesperito', idToChange: 3 });
+
+    expect(result.type).to.be.null;
+    expect(result.message).to.be.deep.equal(updatedMockValue);
   });
 });
