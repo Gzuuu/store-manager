@@ -12,4 +12,6 @@ router.post('/', validateName.validateNameInput, productController.addProduct);
 
 router.put('/:id', validateName.validateNameInput, productController.updateProduct);
 
+router.delete('/:id', productController.deleteProduct);
+
 module.exports = router;
